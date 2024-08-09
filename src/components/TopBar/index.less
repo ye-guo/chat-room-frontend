@@ -1,0 +1,60 @@
+.top_bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  border-radius: 1rem;
+  gap: 1rem;
+
+  .me {
+    display: flex;
+    align-items: center;
+    gap: 0.325rem;
+
+    .avatar {
+      height: 3rem;
+      border-radius: 50%;
+    }
+
+    .name {
+      font-size: 1.1rem;
+      color: #fec596;
+    }
+  }
+
+  .bottom {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    margin-right: 0.325rem;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    gap: 0.325rem;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+    .logout_btn {
+      height: 50%;
+      border: none;
+      padding: 0.325rem;
+      background-color: #fec596;
+      border-radius: 0.325rem;
+
+      &:hover {
+        background-color: #e6b078;
+        transform: scale(1.1);
+
+      }
+    }
+
+    .logo {
+      color: #fec596;
+    }
+  }
+
+
+  @media only screen and (min-width: 770px) {
+    display: none;
+  }
+
+}

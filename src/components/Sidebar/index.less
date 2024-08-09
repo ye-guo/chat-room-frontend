@@ -1,0 +1,62 @@
+.sidebar {
+  display: flex;
+  position: relative;
+  margin-right: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 1rem;
+  overflow: hidden;
+  border-radius: 0.625rem;
+
+  .me {
+    width: 100%;
+    height: 100px;
+    text-align: center;
+
+    .avatar {
+      width: 90%;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .name {
+      color: #fcc396;
+      font-weight: bold;
+      cursor: default;
+    }
+  }
+
+  .bottom {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+
+    .logo {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #fcc396;
+      cursor: default;
+    }
+
+    .logout_btn {
+      background-color: #fcc396;
+      border: none;
+      border-radius: 0.625rem;
+      padding: 0.325rem 0;
+      font-size: 0.875rem;
+      width: 3.3rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+      &:hover {
+        background-color: #dddfe6;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 770px) {
+    display: none;
+  }
+}

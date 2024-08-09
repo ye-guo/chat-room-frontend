@@ -1,0 +1,35 @@
+.header {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  background-color: #bc64a4;
+}
+
+.chat_window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 8;
+  padding: 0.325rem 0.325rem 2rem;
+  gap: 1rem;
+  background-color: #b4a0ff;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.3rem;
+    background-color: transparent; // 默认隐藏
+    transition: background-color 0.5s;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; // 默认透明
+    border-radius: 0.625rem;
+    transition: background-color 0.3s;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #888;
+  }
+
+}

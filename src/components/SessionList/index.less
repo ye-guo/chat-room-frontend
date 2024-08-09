@@ -1,0 +1,32 @@
+.contact_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 3;
+  margin-right: 0.5rem;
+  // background-color: #d2af9d;
+  border-radius: 0.625rem;
+  gap: 0.312rem;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.312rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 0.625rem;
+  }
+
+  &:hover::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-thumb:active {
+    background-color: #888;
+  }
+
+  @media only screen and (max-width: 1160px) {
+    display: none;
+
+    /* 屏幕宽度小于1160px时隐藏 */
+  }
+
+}
