@@ -1,9 +1,30 @@
 // 运行时配置
 
+import { history } from '@umijs/max';
+import { message } from 'antd';
+import { getCurrentUser } from './services/userController/UserController';
+
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
-export async function getInitialState(): Promise<{ name: string }> {
+export async function getInitialState(): Promise<{
+  currentUser?: API.UserVO;
+  fetchUserInfo?: () => Promise<API.UserVO | undefined>;
+}> {
+  const fetchUserInfo = async () => {
+    try {
+      const result = await getCurrentUser();
+      return result.data;
+    } catch (error) {
+      history.push('/');
+      message.error('网络繁忙,稍后重试');
+    }
+    return undefined;
+  };
 
-  return { name: '@umijs/max' };
+  const currentUser = await fetchUserInfo();
+
+  return {
+    fetchUserInfo,
+    currentUser,
+  };
 }
-

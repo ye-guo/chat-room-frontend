@@ -7,17 +7,13 @@ import { useModel } from '@umijs/max';
 import styles from './index.less';
 
 export default function HomePage() {
-  // const [showAuthForms, setShowAuthForms] = useState<boolean>(false);
+  // const { initialState } = useModel('@@initialState');
   const { showAuthForms } = useModel('Home.model');
 
   return (
     <div className={styles.home}>
       <div className={styles.container}>
-        {showAuthForms ? (
-          <AuthForms />
-        ) : (
-          ''
-        )}
+        {showAuthForms ? <AuthForms /> : ''}
         <TopBar />
         <Sidebar />
         <SessionList />

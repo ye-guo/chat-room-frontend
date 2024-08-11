@@ -1,13 +1,26 @@
+import { login, register } from '@/services/userController/UserController';
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-import { Button, Form, Input, Tabs } from 'antd';
+import { Button, Form, Input, message, Tabs } from 'antd';
 import React from 'react';
 import styles from './index.less';
 
 // 定义 LoginForm 组件
 const LoginForm: React.FC = () => {
-  const onFinish = (values: any) => {
+  const { setIsLogin, setShowAuthForms } = useModel('Home.model');
+
+  const onFinish = async (values: API.LoginRequest) => {
     console.log('Login values:', values);
+    const result: API.Result = await login(values);
+    // 失败
+    if (!result.data) {
+      message.error(result.message);
+      return;
+    }
+    // 成功
+    message.success('登录' + result.message);
+    setIsLogin(true);
+    setShowAuthForms(false);
   };
 
   return (
@@ -19,13 +32,32 @@ const LoginForm: React.FC = () => {
     >
       <Form.Item
         name="email"
-        rules={[{ required: true, message: '请输入邮箱!' }]}
+        rules={[
+          {
+            required: true,
+            message: '邮箱是必填项！',
+          },
+          {
+            pattern:
+              /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+            message: '邮箱格式错误！',
+          },
+        ]}
       >
         <Input prefix={<MailOutlined />} placeholder="邮箱" />
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: 'Please input your Password!' }]}
+        rules={[
+          {
+            required: true,
+            message: '密码是必填项！',
+          },
+          {
+            min: 8,
+            message: '长度不小于8！',
+          },
+        ]}
       >
         <Input prefix={<LockOutlined />} type="password" placeholder="密码" />
       </Form.Item>
@@ -40,8 +72,19 @@ const LoginForm: React.FC = () => {
 
 // 定义 RegisterForm 组件
 const RegisterForm: React.FC = () => {
-  const onFinish = (values: any) => {
+  const { setActiveKey } = useModel('Home.model');
+
+  const onFinish = async (values: API.RegisterRequest) => {
     console.log('Register values:', values);
+    const result: API.Result = await register(values);
+    // 失败
+    if (!result.data) {
+      message.error(result.message);
+      return;
+    }
+    // 成功
+    message.success('注册' + result.message);
+    setActiveKey('1');
   };
 
   return (
@@ -53,9 +96,19 @@ const RegisterForm: React.FC = () => {
     >
       <Form.Item
         name="email"
-        rules={[{ required: true, message: '请输入邮箱!' }]}
+        rules={[
+          {
+            required: true,
+            message: '邮箱是必填项！',
+          },
+          {
+            pattern:
+              /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+            message: '邮箱格式错误！',
+          },
+        ]}
       >
-        <Input prefix={<MailOutlined />} type="password" placeholder="邮箱" />
+        <Input prefix={<MailOutlined />} placeholder="邮箱" />
       </Form.Item>
       <Form.Item
         name="username"
@@ -65,12 +118,21 @@ const RegisterForm: React.FC = () => {
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: '请输入密码!' }]}
+        rules={[
+          {
+            required: true,
+            message: '确认密码是必填项！',
+          },
+          {
+            min: 8,
+            message: '长度不小于8！',
+          },
+        ]}
       >
         <Input prefix={<LockOutlined />} type="password" placeholder="密码" />
       </Form.Item>
       <Form.Item
-        name="confirm"
+        name="confirmPwd"
         dependencies={['password']}
         rules={[
           {
@@ -82,9 +144,7 @@ const RegisterForm: React.FC = () => {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(
-                new Error('The two passwords that you entered do not match!'),
-              );
+              return Promise.reject(new Error('两次密码不同！'));
             },
           }),
         ]}
@@ -106,7 +166,7 @@ const RegisterForm: React.FC = () => {
 
 // AuthForms 组件
 const AuthForms: React.FC = () => {
-  const { setShowAuthForms } = useModel('Home.model');
+  const { setShowAuthForms, activeKey, setActiveKey } = useModel('Home.model');
 
   const tabItems = [
     {
@@ -129,7 +189,12 @@ const AuthForms: React.FC = () => {
       >
         ✖
       </div>
-      <Tabs defaultActiveKey="1" centered items={tabItems} />
+      <Tabs
+        activeKey={activeKey}
+        onChange={(key) => setActiveKey(key)}
+        centered
+        items={tabItems}
+      />
     </div>
   );
 };
