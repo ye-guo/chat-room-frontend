@@ -1,8 +1,8 @@
 .msg {
   display: flex;
-  align-items: center;
+  // align-items: flex-start;
 
-  .msg_info {
+  .left {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,23 +14,35 @@
     }
   }
 
-  .msg_content {
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin-left: 0.625rem;
-    padding: 0.7rem;
-    color: #000;
-    background-color: #dcc7e1;
-    border-radius: 0 0.5rem 0.5rem;
+
+    .name {
+      margin-bottom: 0.5rem;
+    }
+
+    .msg_content {
+      padding: 0.7rem;
+      color: #000;
+      background-color: #dcc7e1;
+      border-radius: 0 0.6rem 0.6rem;
+      max-width: 16rem;
+      word-wrap: break-word;
+      align-self: flex-start; // 确保内容盒子从顶部开始对齐
+    }
   }
+
 
   &.owner {
     flex-direction: row-reverse;
 
-    .msg_content { // 更正为 msg_content，确保选择器正确
+    .msg_content {
       margin-right: 0.625rem;
-      padding: 0.7rem;
-      color: #000;
-      background-color: #dcc7e1;
       border-radius: 0.5rem 0 0.5rem 0.5rem;
+      align-self: flex-start; // 同样确保内容盒子从顶部开始对齐
     }
   }
 }

@@ -1,0 +1,31 @@
+.user_item {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem;
+  width: 100%;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #7d4b4b;
+  }
+
+  .avatar {
+    img {
+      width: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .name {
+    flex: 1;
+    /* 使 .name 占满剩余空间 */
+    white-space: nowrap;
+    /* 防止文本换行 */
+    overflow: hidden;
+    /* 超出部分隐藏 */
+    text-overflow: ellipsis;
+    /* 超出部分显示省略号 */
+  }
+}

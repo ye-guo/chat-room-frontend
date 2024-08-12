@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-  gap: 1rem;
+  gap: 1.5rem;
   overflow: hidden;
   border-radius: 0.625rem;
 
@@ -24,6 +24,10 @@
       color: #fcc396;
       font-weight: bold;
       cursor: default;
+      word-wrap: break-word;
+      /* 强制换行 */
+      white-space: normal;
+      /* 允许换行 */
     }
   }
 
@@ -42,16 +46,18 @@
 
     .logout_btn {
       background-color: #fcc396;
+      margin-bottom: 0.2rem;
       border: none;
-      border-radius: 0.625rem;
-      padding: 0.325rem 0;
+      border-radius: 0.35rem;
       font-size: 0.875rem;
-      width: 3.3rem;
+      width: 3.5rem;
+      height: 1.5rem;
       cursor: pointer;
       transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 
       &:hover {
-        background-color: #dddfe6;
+        background-color: #909086;
+        color: #000
       }
     }
   }

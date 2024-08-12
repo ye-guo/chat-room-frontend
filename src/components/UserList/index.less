@@ -1,12 +1,16 @@
-.contact_list {
+.user_list {
+  width: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 3;
-  margin-right: 0.5rem;
-  border-radius: 0.625rem;
-  gap: 0.312rem;
-  overflow-y: auto;
+  flex: 2;
+  margin-left: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  overflow: auto;
+  height: 100%;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.3);
+  overflow: auto;
 
   &::-webkit-scrollbar {
     width: 0.312rem;
@@ -22,10 +26,8 @@
     background-color: #888;
   }
 
-  @media only screen and (max-width: 1160px) {
-    display: none;
-
-    /* 屏幕宽度小于1160px时隐藏 */
+  .header {
+    width: 100%;
+    margin-bottom: 1rem;
   }
-
 }
