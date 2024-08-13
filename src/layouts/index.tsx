@@ -1,3 +1,4 @@
+import WebSocketProvider from '@/components/WebSocketContext';
 import { Outlet, useModel } from '@umijs/max';
 import { message } from 'antd';
 import { useEffect } from 'react';
@@ -21,8 +22,8 @@ export default function Layout() {
   }, []);
 
   return (
-    <>
+    <WebSocketProvider>
       <Outlet />
-    </>
+    </WebSocketProvider>
   );
 }
