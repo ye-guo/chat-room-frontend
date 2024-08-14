@@ -5,7 +5,8 @@
   .lock {
     display: flex;
     justify-content: center;
-    align-items: center;;
+    align-items: center;
+    ;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -34,7 +35,7 @@
     .textarea {
       flex: 9;
       height: 100%;
-      padding: 0.325rem 0.6rem;
+      padding: 0.9rem 0.6rem;
       outline: 0;
       font-size: 1rem;
       word-wrap: break-word;
@@ -46,21 +47,22 @@
       position: relative;
       cursor: text;
       overflow: auto;
+      max-height: 5rem;
 
       &::-webkit-scrollbar {
-        width: 0.3rem;
-        background-color: transparent;
+        width: 0.25rem;
         transition: background-color 0.5s;
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: transparent;
         border-radius: 0.625rem;
         transition: background-color 0.3s;
+        background-color: #888;
+
       }
 
       &:hover::-webkit-scrollbar-thumb {
-        background-color: #888;
+        background-color: #756d6d;
       }
     }
 

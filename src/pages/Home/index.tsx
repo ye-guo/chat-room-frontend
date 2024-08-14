@@ -8,13 +8,13 @@ import { useModel } from '@umijs/max';
 import styles from './index.less';
 
 export default function HomePage() {
-  // const { initialState } = useModel('@@initialState');
-  const { showAuthForms } = useModel('Home.model');
+  const { showAuthForms } = useModel('common');
 
+  // 禁止组件内右键菜单
   const handleContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
-    event.preventDefault(); // 禁止默认右键菜单
+    event.preventDefault();
   };
 
   return (

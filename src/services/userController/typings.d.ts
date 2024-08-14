@@ -12,14 +12,14 @@ declare namespace API {
   };
 
   type LoginRequest = {
-    email?: string;
-    password?: string;
+    email: string;
+    password: string;
   };
 
   type RegisterRequest = {
-    email?: string;
-    username?: string;
-    password?: string;
-    confirmPwd?: string;
+    email: string;
+    username: string;
+    password: string;
+    confirmPwd: string;
   };
 }

@@ -1,16 +1,24 @@
 .msg {
   display: flex;
-  // align-items: flex-start;
 
   .left {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    img {
+    gap: 0.425rem;
+    .avatar {
       width: 3rem;
       border-radius: 50%;
       object-fit: cover;
+    }
+
+    .time {
+      // 换行显示
+      width: 3rem;
+      overflow-wrap: break-word;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #dcc6c6
     }
   }
 
@@ -18,10 +26,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 0.625rem;
+    margin-left: 0.8rem;
 
     .name {
       margin-bottom: 0.5rem;
+      cursor: default;
     }
 
     .msg_content {

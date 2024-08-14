@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 export default function Layout() {
   const { initialState } = useModel('@@initialState');
-  const { setIsLogin } = useModel('Home.model');
+  const { setIsLogin } = useModel('common');
   const { currentUser } = initialState as {
     currentUser?: API.UserVO;
   };

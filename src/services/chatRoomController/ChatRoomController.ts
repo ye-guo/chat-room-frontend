@@ -7,3 +7,12 @@ export async function getGlobalRoom(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+// 获取聊天室消息
+export async function getMessages(roomId: number, currentPage: number, pageSize: number, 
+  options?: { [key: string]: any }) {
+  return request<API.Result>(`/api/chatroom/messages`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

@@ -2,13 +2,86 @@ import File from '@/assets/file.svg';
 import Happy from '@/assets/happy.svg';
 import Img from '@/assets/img.svg';
 import Send from '@/assets/send.svg';
+import { useWebSocket } from '@/hooks/useWebSocket';
 import { useModel } from '@umijs/max';
+import { message } from 'antd';
+import { useRef } from 'react';
 import styles from './index.less';
 
 export default function ChatInput() {
-  const { isLogin, setShowAuthForms } = useModel('Home.model');
-
+  const { initialState } = useModel('@@initialState');
+  const currentUser = initialState?.currentUser;
+  const { isLogin, setShowAuthForms, globalRoom } = useModel('common');
+  const inputRef = useRef<HTMLDivElement>(null);
   const emojis = ['😊', '😂', '😍', '😢', '😎', '😡', '😱', '🥳', '🤔', '🤗'];
+
+  const ws = useWebSocket();
+  const sendMessage = () => {
+    if (!ws || !inputRef.current) {
+      message.error('WebSocket 连接失败');
+      return;
+    }
+
+    // 检查 WebSocket 的 readyState
+    if (
+      ws.readyState === WebSocket.CLOSING ||
+      ws.readyState === WebSocket.CLOSED
+    ) {
+      message.error('与服务器断开连接，请刷新页面以尝试连接');
+      return;
+    }
+
+    const msg = inputRef.current.innerText.trim();
+    if (msg === '') {
+      console.log('消息为空');
+      return;
+    }
+
+    const msgData = {
+      fromUid: currentUser?.id,
+      content: msg,
+      roomId: globalRoom?.roomId,
+    };
+
+    if (ws) {
+      try {
+        ws.send(JSON.stringify(msgData));
+      } catch (error) {
+        message.error('WebSocket 发送失败');
+      }
+    }
+    // 清空输入框
+    inputRef.current.innerText = '';
+  };
+
+  // enter发送 shift+enter 换行
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      if (event.shiftKey) {
+        // Shift + Enter 换行
+        const selection = window.getSelection();
+        if (!selection?.rangeCount) return;
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+
+        // 插入换行符
+        const br = document.createElement('br');
+        range.insertNode(br);
+
+        // 移动光标到换行符之后
+        range.setStartAfter(br);
+        range.setEndAfter(br);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        event.preventDefault(); // 阻止默认行为
+      } else {
+        // 只有 Enter 发送消息
+        event.preventDefault(); // 防止在按下回车时插入新行
+        sendMessage();
+      }
+    }
+  };
 
   return (
     <div className={styles.chat_input_container}>
@@ -20,7 +93,12 @@ export default function ChatInput() {
         </div>
       ) : null}
       <div className={styles.chat_input}>
-        <div className={styles.textarea} contentEditable="true" />
+        <div
+          className={styles.textarea}
+          contentEditable="true"
+          ref={inputRef}
+          onKeyDown={handleKeyDown}
+        />
         <div className={styles.send}>
           <div className={styles.emoji_area}>
             <img src={Happy} alt="emoji" className={styles.emoji_button} />
@@ -44,7 +122,12 @@ export default function ChatInput() {
               <img src={File} alt="file" id={styles.file_icon} />
             </label>
           </div>
-          <img src={Send} alt="send" className={styles.send_button} />
+          <img
+            src={Send}
+            alt="send"
+            className={styles.send_button}
+            onClick={sendMessage}
+          />
         </div>
       </div>
     </div>

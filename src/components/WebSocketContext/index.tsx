@@ -1,5 +1,6 @@
 import { WebSocketContext } from '@/hooks/useWebSocket';
 import { getGlobalRoom } from '@/services/chatRoomController/ChatRoomController';
+import isPaginationData from '@/utils/isPaginationData';
 import { useModel } from '@umijs/max';
 import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +11,7 @@ export default function WebSocketProvider({
   children: React.ReactNode;
 }) {
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const { setGlobalRoom, setMessages } = useModel('Home.model');
+  const { setGlobalRoom, setMessages, setPagination } = useModel('common');
 
   useEffect(() => {
     let reconnectAttempts = 0;
@@ -31,12 +32,43 @@ export default function WebSocketProvider({
         newWs.onopen = () => {
           console.log('WebSocket connection established');
           reconnectAttempts = 0; // 重置重连尝试次数
-          setWs(newWs);
+          setWs(newWs); // 设置ws实例
         };
 
         newWs.onmessage = (event) => {
           console.log('Received message:', event.data);
-          const newMessage = event.data;
+          const paginationData = JSON.parse(event.data);
+
+          let historicalMessages: API.MsgInfo[] = [];
+          // 将事件数据转换为 Pagination 类型
+          if (isPaginationData(paginationData)) {
+            // paginationData存在，并且records存在
+            historicalMessages = paginationData.records.map(
+              (record: API.MsgInfo) => ({
+                message: record.message,
+                userVO: record.userVO,
+              }),
+            );
+
+            const hMReverse: API.MsgInfo[] = historicalMessages.reverse();
+
+            // 分页信息
+            setPagination({
+              totalPages: paginationData.totalPages,
+              currentPage: paginationData.currentPage,
+              totalRecords: paginationData.totalRecords,
+              size: paginationData.size,
+            });
+
+            // 现在可以安全地访问 pagination 对象的属性
+            setMessages((prevMessages) => [
+              ...prevMessages, // 1 2 3 4 5 6     6 5 4 3 2 1
+              ...hMReverse, //    7 8 9 10 11 12   12 11 10 9 8 7
+            ]);
+            return;
+          }
+
+          const newMessage: API.MsgInfo = JSON.parse(event.data);
           setMessages((prevMessages) => [...prevMessages, newMessage]);
         };
 
@@ -47,7 +79,7 @@ export default function WebSocketProvider({
             setTimeout(connectWebSocket, timeout);
             reconnectAttempts++;
           } else {
-            message.error('无法重新连接，请刷新页面');
+            message.error('无法连接服务器，请尝试刷新页面');
           }
         };
 

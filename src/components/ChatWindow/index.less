@@ -17,19 +17,18 @@
   overflow: auto;
 
   &::-webkit-scrollbar {
-    width: 0.3rem;
-    background-color: transparent; // 默认隐藏
+    width: 0.25rem;
     transition: background-color 0.5s;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: transparent; // 默认透明
     border-radius: 0.625rem;
     transition: background-color 0.3s;
+    background-color: #888;
+
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    background-color: #888;
+    background-color: #756d6d;
   }
-
 }

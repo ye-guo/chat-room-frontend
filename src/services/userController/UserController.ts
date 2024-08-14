@@ -31,3 +31,13 @@ export async function getCurrentUser(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+// 退出登录
+export async function logout(
+  options?: { [key: string]: any },
+) {
+  return request<API.Result>(`/api/user/logout`, {
+    method: 'POST',
+    ...(options || {}),
+  });
+}

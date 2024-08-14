@@ -1,1 +1,1 @@
-export const DEFAULT_NAME = 'Umi Max';
+export const LOAD_NEXT_PAGE = 'load_next_page';
