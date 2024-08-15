@@ -8,7 +8,7 @@ import NavButton from '../NavButton';
 import styles from './index.less';
 
 export default function Sidebar() {
-  const { isLogin, setIsLogin } = useModel('common');
+  const { isLogin, setIsLogin } = useModel('Home.model');
   const { initialState } = useModel('@@initialState');
   const { username, avatar } = initialState?.currentUser || {};
 

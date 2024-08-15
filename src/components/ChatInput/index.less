@@ -50,19 +50,20 @@
       max-height: 5rem;
 
       &::-webkit-scrollbar {
-        width: 0.25rem;
-        transition: background-color 0.5s;
+        width: 0.312rem;
+        cursor: default;
       }
 
       &::-webkit-scrollbar-thumb {
+        background-color: transparent;
         border-radius: 0.625rem;
-        transition: background-color 0.3s;
         background-color: #888;
-
       }
 
-      &:hover::-webkit-scrollbar-thumb {
-        background-color: #756d6d;
+      &:hover::-webkit-scrollbar-thumb,
+      &::-webkit-scrollbar-thumb:active {
+        background-color: #6d6c6c;
+        cursor: default;
       }
     }
 

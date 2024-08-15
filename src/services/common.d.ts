@@ -30,9 +30,9 @@ declare namespace API {
   };
 
   type Pagination = {
-    totalPages: number;
+    totalPages?: number;
     currentPage: number;
-    totalRecords: number;
+    totalRecords?: number;
     size: number;
   }
 }

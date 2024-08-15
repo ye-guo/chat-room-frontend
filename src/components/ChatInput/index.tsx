@@ -11,7 +11,7 @@ import styles from './index.less';
 export default function ChatInput() {
   const { initialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
-  const { isLogin, setShowAuthForms, globalRoom } = useModel('common');
+  const { isLogin, setShowAuthForms, globalRoom } = useModel('Home.model');
   const inputRef = useRef<HTMLDivElement>(null);
   const emojis = ['😊', '😂', '😍', '😢', '😎', '😡', '😱', '🥳', '🤔', '🤗'];
 
@@ -42,7 +42,7 @@ export default function ChatInput() {
       content: msg,
       roomId: globalRoom?.roomId,
     };
-
+    console.log('发送消息', msgData);
     if (ws) {
       try {
         ws.send(JSON.stringify(msgData));

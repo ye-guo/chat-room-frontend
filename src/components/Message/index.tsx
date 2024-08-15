@@ -12,7 +12,7 @@ export default function Message({ msg }: messageProps) {
   const { currentUser } = initialState as {
     currentUser?: API.UserVO;
   };
-  // 自己消息颠倒渲染
+  // 自己消息反转渲染
   const owner = msg?.message?.fromUid === currentUser?.id ? true : false;
 
   return (

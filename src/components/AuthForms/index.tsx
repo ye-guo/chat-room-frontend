@@ -7,7 +7,7 @@ import styles from './index.less';
 
 // 定义 LoginForm 组件
 const LoginForm: React.FC = () => {
-  const { setIsLogin, setShowAuthForms } = useModel('common');
+  const { setIsLogin, setShowAuthForms } = useModel('Home.model');
 
   const onFinish = async (values: API.LoginRequest) => {
     console.log('Login values:', values);
@@ -72,7 +72,7 @@ const LoginForm: React.FC = () => {
 
 // 定义 RegisterForm 组件
 const RegisterForm: React.FC = () => {
-  const { setActiveKey } = useModel('common');
+  const { setActiveKey } = useModel('Home.model');
 
   const onFinish = async (values: API.RegisterRequest) => {
     console.log('Register values:', values);
@@ -166,7 +166,7 @@ const RegisterForm: React.FC = () => {
 
 // AuthForms 组件
 const AuthForms: React.FC = () => {
-  const { setShowAuthForms, activeKey, setActiveKey } = useModel('common');
+  const { setShowAuthForms, activeKey, setActiveKey } = useModel('Home.model');
 
   const tabItems = [
     {

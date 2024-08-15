@@ -3,7 +3,7 @@ import { useModel } from '@umijs/max';
 import styles from './index.less';
 
 export default function SessionEntry() {
-  const { globalRoom, msgInfo } = useModel('common');
+  const { globalRoom, msgInfo } = useModel('Home.model');
   // msgInfo 渲染会话卡片的 信息
   return (
     <div className={styles.entry}>
@@ -12,8 +12,7 @@ export default function SessionEntry() {
         <div className={styles.name}>{globalRoom?.name}</div>
         {msgInfo ? (
           <div className={styles.msg}>
-            {msgInfo?.userVO?.username}:
-            {msgInfo?.message?.content}
+            {msgInfo?.userVO?.username}:{msgInfo?.message?.content}
           </div>
         ) : (
           <div className={styles.msg}></div>
