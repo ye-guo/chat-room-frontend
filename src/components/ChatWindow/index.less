@@ -16,18 +16,31 @@
   background-color: #b4a0ff;
   overflow: auto;
 
+  /* 针对 WebKit 引擎的滚动条样式 (例如 Chrome, Safari) */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
   &::-webkit-scrollbar {
     width: 0.312rem;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-radius: 0.625rem;
     background-color: #888;
+    border-radius: 0.625rem;
   }
 
   &:hover::-webkit-scrollbar-thumb,
   &::-webkit-scrollbar-thumb:active {
     background-color: #6d6c6c;
   }
+}
+
+/* 针对火狐浏览器的滚动条样式 */
+@-moz-document url-prefix() {
+  & {
+    scrollbar-color: #888 transparent; /* 滚动条滑块颜色和轨道背景色 */
+  }
+
+  &:hover {
+    scrollbar-color: #6d6c6c transparent; /* 悬停时更改滑块颜色 */
+  }
+}
 }
