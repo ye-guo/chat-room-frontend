@@ -1,8 +1,8 @@
 import Chat from '@/assets/chat.svg';
 import Friend from '@/assets/friend.svg';
 import { logout } from '@/services/userController/UserController';
-import { UserOutlined } from '@ant-design/icons';
-import { useModel } from '@umijs/max';
+import { GithubOutlined, UserOutlined } from '@ant-design/icons';
+import { useLocation, useModel } from '@umijs/max';
 import { Avatar, Button, message } from 'antd';
 import NavButton from '../NavButton';
 import styles from './index.less';
@@ -11,6 +11,9 @@ export default function Sidebar() {
   const { isLogin, setIsLogin } = useModel('Home.model');
   const { initialState } = useModel('@@initialState');
   const { username, avatar } = initialState?.currentUser || {};
+  const location = useLocation();
+  // 获取当前 URL 的路径
+  const currentPath = location.pathname;
 
   return (
     <div className={styles.sidebar}>
@@ -26,9 +29,30 @@ export default function Sidebar() {
           <div className={styles.name}>name</div>
         )}
       </div>
-      <NavButton icon={Chat} />
-      {isLogin ? <NavButton icon={Friend} /> : ''}
+      <NavButton icon={Chat} active={currentPath === '/'} />
+      {isLogin ? (
+        <NavButton
+          icon={Friend}
+          active={currentPath === '/contact'}
+          onClick={() => {
+            message.info('功能暂未开放');
+          }}
+        />
+      ) : (
+        ''
+      )}
       <div className={styles.bottom}>
+        <div style={{marginBottom: '1rem'}}>
+          <a
+            href="https://github.com/ye-guo/chat-room-backend"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none', color: 'inherit'}}
+          >
+            <GithubOutlined style={{fontSize: '2.5rem'}}/>
+          </a>
+        </div>
+
         {isLogin ? (
           <Button
             className={styles.logout_btn}
