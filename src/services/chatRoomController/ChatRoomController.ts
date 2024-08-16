@@ -11,16 +11,16 @@ export async function getGlobalRoom(options?: { [key: string]: any }) {
 // 获取聊天室消息
 export async function getMessages(
   roomId: number,
-  currentPage: number,
   pageSize: number,
+  cursorId: number,
   options?: { [key: string]: any },
 ) {
   return request<API.Result>(`/api/chatroom/messages`, {
     method: 'GET',
     params: {
       roomId,
-      currentPage,
       pageSize,
+      cursorId,
     },
     ...(options || {}),
   });
