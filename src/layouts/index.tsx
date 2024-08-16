@@ -7,7 +7,7 @@ export default function Layout() {
   const { initialState } = useModel('@@initialState');
   const { setIsLogin } = useModel('Home.model');
   const { currentUser } = initialState as {
-    currentUser?: API.UserVO;
+    currentUser?: API.UserVo;
   };
 
   useEffect(() => {

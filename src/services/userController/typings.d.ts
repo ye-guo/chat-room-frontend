@@ -1,5 +1,5 @@
 declare namespace API {
-  type UserVO = {
+  type UserVo = {
     id: number;
     email: string;
     username: string;
