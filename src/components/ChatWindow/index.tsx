@@ -11,16 +11,15 @@ export default function ChatWindow() {
     currentUser?: API.UserVo;
   };
   const windowRef = useRef<HTMLDivElement>(null);
-  const {
-    globalRoom,
-    messages,
-    setMsgInfo,
-    historyMessages,
-    setHistoryMessages,
-    cursorId,
-    setCursorId,
-  } = useModel('Home.model');
+  const { globalRoom, setMsgInfo, messageStore, setMessageStore } =
+    useModel('Home.model');
   const [loading, setLoading] = useState(false); // 添加加载状态
+  const roomId = globalRoom?.id as number;
+  const {
+    messages = [],
+    historyMessages = [],
+    cursorId = 0,
+  } = messageStore[roomId] || {};
 
   const loadHistoryMessages = async (
     roomId: number,
@@ -36,26 +35,35 @@ export default function ChatWindow() {
     try {
       const result = await getMessages(roomId, pageSize, cursorId);
       const records = result.data.records;
+      const data = result.data;
       if (!records) {
         console.log('没有更多消息了');
         message.info('没有更多消息了');
         return;
       }
-      console.log('响应信息：', result.data);
 
-      // 设置新的游标
-      setCursorId(() => {
-        const cursorId = result.data.cursorId;
-        console.log('更新后的游标ID:', cursorId);
-        return cursorId;
-      });
+      console.log('响应信息：', data);
 
       const hMReverse: API.MsgInfo[] = records.reverse();
 
-      setHistoryMessages((prevMessages: API.MsgInfo[]) => [
-        ...hMReverse,
-        ...prevMessages,
-      ]);
+      setMessageStore((prevStore) => {
+        const lastRoomData = prevStore[data.roomId] || {
+          messages: [],
+          historyMessages: [],
+          cursorId: 0,
+        };
+
+        return {
+          ...prevStore,
+          [data.roomId]: {
+            ...lastRoomData,
+            cursorId: data.cursorId,
+            // 更新历史消息
+            historyMessages: [...hMReverse, ...lastRoomData.historyMessages],
+            messages: [...lastRoomData.messages],
+          },
+        };
+      });
 
       // 调整滚动位置
       setTimeout(() => {
@@ -115,7 +123,7 @@ export default function ChatWindow() {
     if (windowRef.current?.scrollTop === 0) {
       console.log('滑到顶部，游标是：' + cursorId);
 
-      loadHistoryMessages(globalRoom?.roomId as number, 15, cursorId!);
+      loadHistoryMessages(roomId, 15, cursorId!);
     }
   }, [loadHistoryMessages]);
 

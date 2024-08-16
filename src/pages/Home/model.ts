@@ -13,13 +13,15 @@ export default () => {
   const [showAuthForms, setShowAuthForms] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string>('1');
   const [globalRoom, setGlobalRoom] = useState<API.GroupRoom>();
-  // 历史消息状态
-  const [historyMessages, setHistoryMessages] = useState<API.MsgInfo[]>([]);
-  // 新消息状态
-  const [messages, setMessages] = useState<API.MsgInfo[]>([]);
   // msgInfo 渲染会话卡片的 信息
   const [msgInfo, setMsgInfo] = useState<msgInfoProps>();
-  const [cursorId, setCursorId] = useState<number>();
+  const [messageStore, setMessageStore] = useState<{
+    [roomId: number]: {
+      historyMessages: API.MsgInfo[];
+      messages: API.MsgInfo[];
+      cursorId: number;
+    };
+  }>({});
 
   useEffect(() => {
     getGlobalRoom().then((res) => {
@@ -41,13 +43,9 @@ export default () => {
     setActiveKey,
     globalRoom,
     setGlobalRoom,
-    messages,
-    setMessages,
-    historyMessages,
-    setHistoryMessages,
     msgInfo,
     setMsgInfo,
-    cursorId,
-    setCursorId,
+    messageStore,
+    setMessageStore,
   };
 };
