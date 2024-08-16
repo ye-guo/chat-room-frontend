@@ -7,7 +7,7 @@ declare namespace API {
 
   type MsgInfo = {
     message?: API.Message;
-    userVO?: API.UserVO;
+    userVo?: API.UserVo;
   };
 
   type Message = {
@@ -19,20 +19,11 @@ declare namespace API {
     createTime: Date;
     updateTime: Date;
     isDeleted: number;
-  }
-
-  type PaginationData = {
-    totalPages: number;
-    currentPage: number;
-    totalRecords: number;
-    size: number;
-    records: MsgInfo[];
   };
 
-  type Pagination = {
-    totalPages?: number;
-    currentPage: number;
-    totalRecords?: number;
-    size: number;
-  }
+  type CursorResponse = {
+    pageSize: number;
+    cursorId: number;
+    records: MsgInfo[];
+  };
 }
