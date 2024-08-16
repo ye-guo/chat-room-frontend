@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 interface msgInfoProps {
   message?: API.Message;
-  userVO?: API.UserVO;
+  userVo?: API.UserVo;
 }
 
 export default () => {
@@ -19,10 +19,7 @@ export default () => {
   const [messages, setMessages] = useState<API.MsgInfo[]>([]);
   // msgInfo 渲染会话卡片的 信息
   const [msgInfo, setMsgInfo] = useState<msgInfoProps>();
-  const [pagination, setPagination] = useState<API.Pagination>({
-    currentPage: 2,
-    size: 20,
-  });
+  const [cursorId, setCursorId] = useState<number>();
 
   useEffect(() => {
     getGlobalRoom().then((res) => {
@@ -50,7 +47,7 @@ export default () => {
     setHistoryMessages,
     msgInfo,
     setMsgInfo,
-    pagination,
-    setPagination,
+    cursorId,
+    setCursorId,
   };
 };

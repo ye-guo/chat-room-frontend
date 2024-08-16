@@ -8,7 +8,7 @@ import styles from './index.less';
 export default function ChatWindow() {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState as {
-    currentUser?: API.UserVO;
+    currentUser?: API.UserVo;
   };
   const windowRef = useRef<HTMLDivElement>(null);
   const {
@@ -17,15 +17,15 @@ export default function ChatWindow() {
     setMsgInfo,
     historyMessages,
     setHistoryMessages,
-    pagination,
-    setPagination,
+    cursorId,
+    setCursorId,
   } = useModel('Home.model');
   const [loading, setLoading] = useState(false); // 添加加载状态
 
   const loadHistoryMessages = async (
     roomId: number,
-    currentPage: number,
     pageSize: number,
+    cursorId: number,
   ) => {
     // 防止重复请求
     if (loading) return; // 如果正在加载，则不执行新的请求
@@ -34,24 +34,20 @@ export default function ChatWindow() {
     const previousScrollHeight = windowRef.current?.scrollHeight || 0;
     // 加载历史消息
     try {
-      const result = await getMessages(roomId, currentPage, pageSize);
+      const result = await getMessages(roomId, pageSize, cursorId);
       const records = result.data.records;
       if (!records) {
         console.log('没有更多消息了');
+        message.info('没有更多消息了');
         return;
       }
       console.log('响应信息：', result.data);
 
-      setPagination((prevState) => {
-        const newPagination = {
-          ...prevState,
-          totalPages: result.data.totalPages,
-          currentPage: prevState.currentPage + 1,
-          totalRecords: result.data.totalRecords,
-          size: result.data.size,
-        };
-        console.log('更新后的分页信息:', newPagination);
-        return newPagination;
+      // 设置新的游标
+      setCursorId(() => {
+        const cursorId = result.data.cursorId;
+        console.log('更新后的游标ID:', cursorId);
+        return cursorId;
       });
 
       const hMReverse: API.MsgInfo[] = records.reverse();
@@ -67,7 +63,7 @@ export default function ChatWindow() {
           windowRef.current.scrollTop =
             windowRef.current.scrollHeight - previousScrollHeight;
         }
-      }, 0);
+      }, 10);
     } catch (error) {
       message.error('加载历史消息时出错');
       console.log('加载历史消息时出错:', error);
@@ -107,7 +103,7 @@ export default function ChatWindow() {
       if (
         messages.length > 0 &&
         windowRef.current &&
-        latestMessage.userVO?.id === currentUser?.id
+        latestMessage.userVo?.id === currentUser?.id
       ) {
         windowRef.current.scrollTop = windowRef.current.scrollHeight;
       }
@@ -117,15 +113,11 @@ export default function ChatWindow() {
   // 顶部加载历史信息
   const handleScroll = useCallback(() => {
     if (windowRef.current?.scrollTop === 0) {
-      console.log('滑倒顶部,请求第==' + pagination.currentPage + '==页数据');
+      console.log('滑到顶部，游标是：' + cursorId);
 
-      loadHistoryMessages(
-        globalRoom?.roomId as number,
-        pagination.currentPage,
-        pagination.size,
-      );
+      loadHistoryMessages(globalRoom?.roomId as number, 15, cursorId!);
     }
-  }, [pagination, loadHistoryMessages]);
+  }, [loadHistoryMessages]);
 
   // 监听滚动事件，加载历史数据
   useEffect(() => {
