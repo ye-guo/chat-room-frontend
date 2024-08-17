@@ -98,7 +98,7 @@ export default function WebSocketProvider({
               ...prevStore,
               [sigleData.message.roomId]: {
                 ...lastRoomData,
-                cursorId: sigleData.message.cursorId,
+                // 实时消息不设置游标
                 messages: newMessages,
                 historyMessages: lastRoomData.historyMessages,
               },
