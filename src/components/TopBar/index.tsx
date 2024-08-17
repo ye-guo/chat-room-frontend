@@ -1,7 +1,7 @@
 import Chat from '@/assets/chat.svg';
 import Friend from '@/assets/friend.svg';
 import { logout } from '@/services/userController/UserController';
-import { UserOutlined } from '@ant-design/icons';
+import { GithubOutlined, UserOutlined } from '@ant-design/icons';
 import { useLocation, useModel } from '@umijs/max';
 import { Avatar, Button, message } from 'antd';
 import NavButton from '../NavButton';
@@ -41,6 +41,16 @@ export default function TopBar() {
         ''
       )}
       <div className={styles.bottom}>
+        <div style={{ marginBottom: '1rem' }}>
+          <a
+            href="https://github.com/ye-guo/chat-room-backend"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <GithubOutlined style={{ fontSize: '2.5rem' }} />
+          </a>
+        </div>
         {isLogin ? (
           <Button
             className={styles.logout_btn}

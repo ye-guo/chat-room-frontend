@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '@/constants';
 import { getMessages } from '@/services/chatRoomController/ChatRoomController';
 import { useModel } from '@umijs/max';
 import { message, Spin } from 'antd';
@@ -14,11 +15,12 @@ export default function ChatWindow() {
   const { globalRoom, setMsgInfo, messageStore, setMessageStore } =
     useModel('Home.model');
   const [loading, setLoading] = useState(false); // 添加加载状态
+  const [isAtBottom, setIsAtBottom] = useState(true); // 是否在底部状态，用来处理对方消息的自动滚动
   const roomId = globalRoom?.id as number;
   const {
     messages = [],
     historyMessages = [],
-    cursorId = 0,
+    cursorId,
   } = messageStore[roomId] || {};
 
   const loadHistoryMessages = async (
@@ -92,6 +94,8 @@ export default function ChatWindow() {
     if (windowRef.current) {
       observer.observe(windowRef.current);
     }
+    // 防止火狐等浏览器不兼容
+    setTimeout(scrollToBottom, 100);
 
     return () => {
       if (windowRef.current) {
@@ -102,28 +106,45 @@ export default function ChatWindow() {
 
   // 判断消息是否为当前用户发送
   useEffect(() => {
-    if (messages.length > 0 || historyMessages.length > 0) {
+    if (messages || historyMessages) {
       const latestMessage: API.MsgInfo =
         messages[messages.length - 1] ||
         historyMessages[historyMessages.length - 1];
       setMsgInfo(latestMessage);
 
+      // 非自己消息 若在底部则滚动到底部，否则不滚动
       if (
-        messages.length > 0 &&
+        messages &&
         windowRef.current &&
-        latestMessage.userVo?.id === currentUser?.id
+        latestMessage?.userVo?.id !== currentUser?.id &&
+        isAtBottom
+      ) {
+        windowRef.current.scrollTop = windowRef.current.scrollHeight;
+      }
+
+      if (
+        messages &&
+        windowRef.current &&
+        latestMessage?.userVo?.id === currentUser?.id
       ) {
         windowRef.current.scrollTop = windowRef.current.scrollHeight;
       }
     }
-  }, [messages.length, historyMessages.length]);
+  }, [messages, historyMessages]);
 
   // 顶部加载历史信息
   const handleScroll = useCallback(() => {
+    // 滚动条在底部setIsAtBottom(true)
+    if (windowRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = windowRef.current;
+      const isBottom = scrollHeight - scrollTop - clientHeight < 5; // 允许5像素的误差范围
+      setIsAtBottom(isBottom);
+    }
+    // 滚动条滑倒顶部加载历史消息
     if (windowRef.current?.scrollTop === 0) {
       console.log('滑到顶部，游标是：' + cursorId);
 
-      loadHistoryMessages(roomId, 15, cursorId!);
+      loadHistoryMessages(roomId, PAGE_SIZE, cursorId!);
     }
   }, [loadHistoryMessages]);
 
