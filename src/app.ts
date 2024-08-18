@@ -1,6 +1,6 @@
 // 运行时配置
 
-import { history } from '@umijs/max';
+import { history, RequestConfig } from '@umijs/max';
 import { message } from 'antd';
 import { getCurrentUser } from './services/userController/UserController';
 
@@ -28,3 +28,10 @@ export async function getInitialState(): Promise<{
     currentUser,
   };
 }
+
+export const request: RequestConfig = {
+  // 多环境设置
+  baseURL:
+    process.env.NODE_ENV === 'production' ? 'https://chat.yeguo.icu' : '',
+  withCredentials: true,
+};
