@@ -1,0 +1,43 @@
+.card {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #bc64a4;
+  border-radius: 0.625rem;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 10%);
+  padding: 3.125rem;
+  width: 18.75rem;
+  height: 25rem;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+
+  .close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .avatar {
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .name {
+      font-size: 1.5rem;
+      color: #ccc;
+    }
+  }
+}
