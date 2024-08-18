@@ -25,3 +25,17 @@ export async function getMessages(
     ...(options || {}),
   });
 }
+
+// 获取聊天室用户
+export async function getGroupUsers(
+  roomId: number,
+  options?: { [key: string]: any },
+) {
+  return request<API.Result>(`/api/chatroom/groupUsers`, {
+    method: 'GET',
+    params: {
+      roomId,
+    },
+    ...(options || {}),
+  });
+}
