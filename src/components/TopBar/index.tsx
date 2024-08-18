@@ -8,7 +8,7 @@ import NavButton from '../NavButton';
 import styles from './index.less';
 
 export default function TopBar() {
-  const { isLogin, setIsLogin } = useModel('Home.model');
+  const { isLogin, setIsLogin, setShowInfoCard } = useModel('Home.model');
   const { initialState } = useModel('@@initialState');
   const { username, avatar } = initialState?.currentUser || {};
   const location = useLocation();
@@ -18,7 +18,14 @@ export default function TopBar() {
     <div className={styles.top_bar}>
       <div className={styles.me}>
         {isLogin ? (
-          <img src={avatar} alt="avatar" className={styles.avatar} />
+          <img
+            src={avatar}
+            alt="avatar"
+            className={styles.avatar}
+            onClick={() => {
+              setShowInfoCard(true);
+            }}
+          />
         ) : (
           <Avatar size={59.25} icon={<UserOutlined />} />
         )}

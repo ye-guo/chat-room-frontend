@@ -13,8 +13,8 @@ export default () => {
   const [showAuthForms, setShowAuthForms] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string>('1');
   const [globalRoom, setGlobalRoom] = useState<API.GroupRoom>();
-  // msgInfo 渲染会话卡片的 信息
-  const [msgInfo, setMsgInfo] = useState<msgInfoProps>();
+  const [msgInfo, setMsgInfo] = useState<msgInfoProps>();   // msgInfo 渲染会话卡片的 信息
+  const [showInfoCard, setShowInfoCard] = useState(false);
   const [messageStore, setMessageStore] = useState<{
     [roomId: number]: {
       historyMessages: API.MsgInfo[];
@@ -47,5 +47,7 @@ export default () => {
     setMsgInfo,
     messageStore,
     setMessageStore,
+    showInfoCard,
+    setShowInfoCard,
   };
 };

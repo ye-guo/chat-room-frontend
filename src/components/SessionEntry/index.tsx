@@ -12,7 +12,7 @@ export default function SessionEntry() {
         <div className={styles.name}>{globalRoom?.name}</div>
         {msgInfo ? (
           <div className={styles.msg}>
-            {msgInfo?.userVo?.username}:{msgInfo?.message?.content}
+            {msgInfo?.userVo?.username}：{msgInfo?.message?.content}
           </div>
         ) : (
           <div className={styles.msg}></div>

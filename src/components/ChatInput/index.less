@@ -6,7 +6,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    ;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -35,7 +34,7 @@
     .textarea {
       flex: 9;
       height: 100%;
-      padding: 0.9rem 0.6rem;
+      padding: 1rem 0.6rem;
       outline: 0;
       font-size: 1rem;
       word-wrap: break-word;
@@ -53,6 +52,7 @@
       @media screen and (-webkit-min-device-pixel-ratio:0) {
         &::-webkit-scrollbar {
           width: 0.312rem;
+          height: 0.312rem;
         }
 
         &::-webkit-scrollbar-thumb {
@@ -85,13 +85,24 @@
       display: flex;
       align-items: center;
       flex: 1;
-      // margin-left: 1.25rem;
       padding: 0 1rem;
       gap: 1rem;
 
       .emoji_area {
-        position: relative;
 
+
+        /* 针对火狐浏览器的滚动条样式 */
+        @-moz-document url-prefix() {
+          & {
+            scrollbar-color: #888 transparent;
+            /* 滚动条滑块颜色和轨道背景色 */
+          }
+
+          &:hover {
+            scrollbar-color: #6d6c6c transparent;
+            /* 悬停时更改滑块颜色 */
+          }
+        }
 
         .emoji_button {
           width: 1.5rem;
@@ -99,24 +110,42 @@
         }
 
         .emoji_picker {
-          display: none;
           position: absolute;
-          bottom: 50px;
-          background-color: #fff;
-          border: 1px solid #ccc;
+          bottom: 3.5rem;
+          right: 3.5rem;
+          background-color: #dcc7e1;
+          border: 0.062rem solid #ccc;
           border-radius: 0.5rem;
           padding: 0.5rem;
           box-shadow: 0 2px 5px rgba(0, 0, 0, 20%);
           z-index: 1000;
+          max-width: 20rem;
+          max-height: 21.875rem;
+          overflow: auto;
+
+          /* 确保 z-index 足够高 */
+          &::-webkit-scrollbar {
+            width: 0.312rem;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 0.625rem;
+          }
+
+          &:hover::-webkit-scrollbar-thumb,
+          &::-webkit-scrollbar-thumb:active {
+            background-color: #6d6c6c;
+          }
+
 
           .emoji {
-            display: inline-block;
             font-size: 1.5rem;
             cursor: pointer;
-            margin: 0.2rem;
+            margin: 0rem;
 
             &:hover {
-              background-color: #f1f1f1;
+              background-color: rgba(0, 0, 0, 0.2);
               border-radius: 0.25rem;
             }
           }

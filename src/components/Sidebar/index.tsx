@@ -8,9 +8,9 @@ import NavButton from '../NavButton';
 import styles from './index.less';
 
 export default function Sidebar() {
-  const { isLogin, setIsLogin } = useModel('Home.model');
+  const { isLogin, setIsLogin, setShowInfoCard } = useModel('Home.model');
   const { initialState } = useModel('@@initialState');
-  const { username, avatar } = initialState?.currentUser || {};
+  const currentUser = initialState?.currentUser as API.UserVo;
   const location = useLocation();
   // 获取当前 URL 的路径
   const currentPath = location.pathname;
@@ -18,13 +18,20 @@ export default function Sidebar() {
   return (
     <div className={styles.sidebar}>
       <div className={styles.me}>
-        {isLogin ? (
-          <img src={avatar} alt="avatar" className={styles.avatar} />
+        {isLogin && currentUser?.avatar ? (
+          <img
+            src={`${currentUser?.avatar}`}
+            alt="avatar"
+            className={styles.avatar}
+            onClick={() => {
+              setShowInfoCard(true);
+            }}
+          />
         ) : (
           <Avatar size={59.25} icon={<UserOutlined />} />
         )}
         {isLogin ? (
-          <div className={styles.name}>{username}</div>
+          <div className={styles.name}>{currentUser?.username}</div>
         ) : (
           <div className={styles.name}>name</div>
         )}
@@ -42,14 +49,14 @@ export default function Sidebar() {
         ''
       )}
       <div className={styles.bottom}>
-        <div style={{marginBottom: '1rem'}}>
+        <div style={{ marginBottom: '1rem' }}>
           <a
             href="https://github.com/ye-guo/chat-room-backend"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ textDecoration: 'none', color: 'inherit'}}
+            style={{ textDecoration: 'none', color: 'inherit' }}
           >
-            <GithubOutlined style={{fontSize: '2.5rem'}}/>
+            <GithubOutlined style={{ fontSize: '2.5rem' }} />
           </a>
         </div>
 

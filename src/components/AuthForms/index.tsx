@@ -10,7 +10,6 @@ const LoginForm: React.FC = () => {
   const { setIsLogin, setShowAuthForms } = useModel('Home.model');
 
   const onFinish = async (values: API.LoginRequest) => {
-    console.log('Login values:', values);
     const result: API.Result = await login(values);
     // 失败
     if (!result.data) {
@@ -75,7 +74,6 @@ const RegisterForm: React.FC = () => {
   const { setActiveKey } = useModel('Home.model');
 
   const onFinish = async (values: API.RegisterRequest) => {
-    console.log('Register values:', values);
     const result: API.Result = await register(values);
     // 失败
     if (!result.data) {

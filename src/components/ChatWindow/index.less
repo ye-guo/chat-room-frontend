@@ -7,7 +7,6 @@
 }
 
 .chat_window {
-  position: relative;
   display: flex;
   flex-direction: column;
   flex: 8;
@@ -16,10 +15,30 @@
   background-color: #b4a0ff;
   overflow: auto;
 
+  .new_message_alert {
+    position: absolute;
+    background-color: #bc64a4;
+    bottom: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+  }
+  
+  .new_message_alert:hover {
+    background-color: #dd73a1 !important; /* 悬浮状态的背景色比原色亮 */
+    color: #fff !important; /* 确保悬浮状态下文字颜色与背景颜色对比明显 */
+  }
+
   /* 针对 WebKit 引擎的滚动条样式 (例如 Chrome, Safari) */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   &::-webkit-scrollbar {
     width: 0.312rem;
+    height: 0.312rem;
   }
 
   &::-webkit-scrollbar-thumb {

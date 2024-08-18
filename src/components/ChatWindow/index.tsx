@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from '@/constants';
 import { getMessages } from '@/services/chatRoomController/ChatRoomController';
 import { useModel } from '@umijs/max';
-import { message, Spin } from 'antd';
+import { Button, message, Spin } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Message from '../Message';
 import styles from './index.less';
@@ -16,6 +16,7 @@ export default function ChatWindow() {
     useModel('Home.model');
   const [loading, setLoading] = useState(false); // 添加加载状态
   const [isAtBottom, setIsAtBottom] = useState(true); // 是否在底部状态，用来处理对方消息的自动滚动
+  const [showNewMessageAlert, setShowNewMessageAlert] = useState(false); // 是否显示新消息提示
   const roomId = globalRoom?.id as number;
   const {
     messages = [],
@@ -122,6 +123,7 @@ export default function ChatWindow() {
         windowRef.current.scrollTop = windowRef.current.scrollHeight;
       }
 
+      // 自己消息 滚动到底部
       if (
         messages &&
         windowRef.current &&
@@ -132,9 +134,25 @@ export default function ChatWindow() {
     }
   }, [messages, historyMessages]);
 
+  // 新消息没在底部时提示
+  useEffect(() => {
+    if (messages) {
+      const latestMessage: API.MsgInfo = messages[messages.length - 1];
+
+      if (
+        windowRef.current &&
+        latestMessage?.userVo?.id !== currentUser?.id &&
+        !isAtBottom
+      ) {
+        setShowNewMessageAlert(true);
+      }
+    }
+  }, [messages.length]);
+
   // 顶部加载历史信息
   const handleScroll = useCallback(() => {
     // 滚动条在底部setIsAtBottom(true)
+    // scrollTop ===  scrollHeight - clientHeight（内容顶部 - 视口顶部）
     if (windowRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = windowRef.current;
       const isBottom = scrollHeight - scrollTop - clientHeight < 5; // 允许5像素的误差范围
@@ -162,6 +180,18 @@ export default function ChatWindow() {
     };
   }, [handleScroll]);
 
+  // 点击新消息提示回到底部
+  const handleScrollToBottom = () => {
+    const chatWindow = windowRef.current;
+    if (chatWindow) {
+      chatWindow.scrollTo({
+        top: chatWindow.scrollHeight,
+        behavior: 'smooth', // 添加平滑滚动效果
+      });
+      setShowNewMessageAlert(false);
+    }
+  };
+
   return (
     <>
       <div className={styles.header}>{globalRoom?.name}</div>
@@ -173,6 +203,14 @@ export default function ChatWindow() {
         {messages.map((msg: API.MsgInfo, index: number) => {
           return <Message key={index} msg={msg} />;
         })}
+        {showNewMessageAlert && (
+          <Button
+            className={styles.new_message_alert}
+            onClick={handleScrollToBottom}
+          >
+            新消息，点击查看
+          </Button>
+        )}
       </div>
     </>
   );

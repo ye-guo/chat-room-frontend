@@ -3,17 +3,19 @@ import Happy from '@/assets/happy.svg';
 import Img from '@/assets/img.svg';
 import Send from '@/assets/send.svg';
 import { useWebSocket } from '@/hooks/useWebSocket';
+import emojis from '@/utils/emojis';
 import { useModel } from '@umijs/max';
 import { message } from 'antd';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 
 export default function ChatInput() {
   const { initialState } = useModel('@@initialState');
-  const currentUser = initialState?.currentUser;
+  const currentUser = initialState?.currentUser as API.UserVo;
   const { isLogin, setShowAuthForms, globalRoom } = useModel('Home.model');
   const inputRef = useRef<HTMLDivElement>(null);
-  const emojis = ['😊', '😂', '😍', '😢', '😎', '😡', '😱', '🥳', '🤔', '🤗'];
+  const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
 
   const ws = useWebSocket();
   const sendMessage = () => {
@@ -83,6 +85,23 @@ export default function ChatInput() {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node)
+      ) {
+        setEmojiPickerVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className={styles.chat_input_container}>
       {!isLogin ? (
@@ -101,14 +120,30 @@ export default function ChatInput() {
         />
         <div className={styles.send}>
           <div className={styles.emoji_area}>
-            <img src={Happy} alt="emoji" className={styles.emoji_button} />
-            <div className={styles.emoji_picker}>
-              {emojis.map((emoji, index) => (
-                <span key={index} className={styles.emoji}>
-                  {emoji}
-                </span>
-              ))}
-            </div>
+            <img
+              src={Happy}
+              alt="emoji"
+              className={styles.emoji_button}
+              onClick={() => setEmojiPickerVisible(!isEmojiPickerVisible)}
+            />
+            {isEmojiPickerVisible && (
+              <div className={styles.emoji_picker} ref={emojiPickerRef}>
+                {emojis.map((emoji, index) => (
+                  <span
+                    key={index}
+                    className={styles.emoji}
+                    onClick={() => {
+                      if (inputRef.current) {
+                        inputRef.current.innerText += emoji;
+                      }
+                      setEmojiPickerVisible(false); // 点击 emoji 后隐藏表情选择器
+                    }}
+                  >
+                    {emoji}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           <div className={styles.img_area}>
             <input type="file" id={styles.img} />

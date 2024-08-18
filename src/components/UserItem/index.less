@@ -1,31 +1,46 @@
 .user_item {
   display: flex;
+  position: relative;
   align-items: center;
   padding: 0.3rem;
   width: 100%;
   border-radius: 0.4rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  background-color: #9B87E6 ;
 
   &:hover {
     background-color: #7d4b4b;
   }
 
   .avatar {
+    position: relative;
+    
     img {
-      width: 1.5rem;
+      width: 2rem;
+      height: 2rem;
       margin-right: 0.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* 圆点样式 */
+    .dot {
+      position: absolute;
+      left: 1.6rem;
+      bottom: 0;
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background-color: rgb(24, 9, 9); /* 默认灰色 */
+      border: 0.1rem solid white; /* 圆点的白色边框 */
     }
   }
 
   .name {
     flex: 1;
-    /* 使 .name 占满剩余空间 */
     white-space: nowrap;
-    /* 防止文本换行 */
     overflow: hidden;
-    /* 超出部分隐藏 */
     text-overflow: ellipsis;
-    /* 超出部分显示省略号 */
   }
 }
