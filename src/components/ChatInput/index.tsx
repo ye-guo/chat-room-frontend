@@ -1,6 +1,4 @@
-import File from '@/assets/file.svg';
 import Happy from '@/assets/happy.svg';
-import Img from '@/assets/img.svg';
 import Send from '@/assets/send.svg';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import emojis from '@/utils/emojis';
@@ -145,7 +143,7 @@ export default function ChatInput() {
               </div>
             )}
           </div>
-          <div className={styles.img_area}>
+          {/* <div className={styles.img_area}>
             <input type="file" id={styles.img} />
             <label htmlFor={styles.img}>
               <img src={Img} alt="img" id={styles.img_icon} />
@@ -156,7 +154,7 @@ export default function ChatInput() {
             <label htmlFor={styles.file}>
               <img src={File} alt="file" id={styles.file_icon} />
             </label>
-          </div>
+          </div> */}
           <img
             src={Send}
             alt="send"

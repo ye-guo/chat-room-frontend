@@ -12,7 +12,7 @@ export async function getGlobalRoom(options?: { [key: string]: any }) {
 export async function getMessages(
   roomId: number,
   pageSize: number,
-  cursorId: number,
+  cursorId?: number,
   options?: { [key: string]: any },
 ) {
   return request<API.Result>(`/api/chatroom/messages`, {

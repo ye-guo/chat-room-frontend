@@ -22,6 +22,7 @@ declare namespace API {
   };
 
   type CursorResponse = {
+    roomId: number;
     pageSize: number;
     cursorId: number;
     records: MsgInfo[];
