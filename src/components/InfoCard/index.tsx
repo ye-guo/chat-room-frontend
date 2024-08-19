@@ -141,6 +141,7 @@ export default () => {
           name="image"
           listType="picture"
           maxCount={1}
+          withCredentials={true}
         >
           <Button shape="round" icon={<UploadOutlined />}>
             上传头像
