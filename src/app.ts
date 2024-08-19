@@ -32,6 +32,6 @@ export async function getInitialState(): Promise<{
 export const request: RequestConfig = {
   // 多环境设置
   baseURL:
-    process.env.NODE_ENV === 'production' ? 'https://chat.yeguo.icu' : '',
+    process.env.NODE_ENV === 'production' ? 'https://api.chat.yeguo.icu' : '',
   withCredentials: true,
 };
