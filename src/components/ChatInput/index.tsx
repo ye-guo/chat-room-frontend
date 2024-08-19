@@ -133,8 +133,17 @@ export default function ChatInput() {
                     onClick={() => {
                       if (inputRef.current) {
                         inputRef.current.innerText += emoji;
+                        setEmojiPickerVisible(false); // 点击 emoji 后隐藏表情选择器
+                        // 重新设置焦点到输入框
+                        inputRef.current.focus();
+                        // 将光标移动到内容的末尾
+                        const range = document.createRange();
+                        const selection = window.getSelection();
+                        range.selectNodeContents(inputRef.current);
+                        range.collapse(false);
+                        selection?.removeAllRanges();
+                        selection?.addRange(range);
                       }
-                      setEmojiPickerVisible(false); // 点击 emoji 后隐藏表情选择器
                     }}
                   >
                     {emoji}
