@@ -27,7 +27,7 @@ export default function WebSocketProvider({
       };
 
       newWs.onmessage = (event) => {
-        console.log('Received message:', event.data);
+        // console.log('Received message:', event.data);
         // event.data type MsgInfo或CursorResponse 类型
         const cursorData = JSON.parse(event.data);
 
