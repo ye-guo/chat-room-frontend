@@ -27,7 +27,7 @@ export default function WebSocketProvider({
       };
 
       newWs.onmessage = (event) => {
-        // console.log('Received message:', event.data);
+        console.log('Received message:', event.data);
         // event.data type MsgInfo或CursorResponse 类型
         const cursorData = JSON.parse(event.data);
 
@@ -46,7 +46,7 @@ export default function WebSocketProvider({
           const hMReverse: API.MsgInfo[] = historicalMessages.reverse();
 
           setMessageStore((prevStore) => {
-            const lastRoomData = prevStore[cursorData.roomId] || {
+            const lastRoomData = prevStore[cursorData?.roomId] || {
               messages: [],
               historyMessages: [],
               cursorId: 0,
@@ -54,16 +54,16 @@ export default function WebSocketProvider({
 
             return {
               ...prevStore,
-              [cursorData.roomId]: {
+              [cursorData?.roomId]: {
                 ...lastRoomData,
                 // 设置游标
-                cursorId: cursorData.cursorId,
+                cursorId: cursorData?.cursorId,
                 // 更新历史消息
                 historyMessages: [
-                  ...lastRoomData.historyMessages,
+                  ...lastRoomData?.historyMessages,
                   ...hMReverse,
                 ],
-                messages: [...lastRoomData.messages],
+                messages: [...lastRoomData?.messages],
               },
             };
           });
@@ -77,7 +77,7 @@ export default function WebSocketProvider({
         const sigleData = JSON.parse(event.data);
         setMessageStore((prevStore) => {
           // 获取当前房间的数据，或者初始化为空
-          const lastRoomData = prevStore[sigleData.message.roomId] || {
+          const lastRoomData = prevStore[sigleData?.message?.roomId] || {
             cursorId: 0,
             historyMessages: [],
             messages: [],
@@ -93,11 +93,11 @@ export default function WebSocketProvider({
           ) {
             console.log('****** 实时消息：', sigleData);
             console.log('****** 实时消息 newMessages：', newMessages);
-            console.log('****** 实时消息房间：', sigleData.message.roomId);
+            console.log('****** 实时消息房间：', sigleData?.message?.roomId);
 
             return {
               ...prevStore,
-              [sigleData.message.roomId]: {
+              [sigleData?.message?.roomId]: {
                 ...lastRoomData,
                 // 实时消息不设置游标
                 messages: newMessages,

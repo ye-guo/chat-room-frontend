@@ -13,7 +13,7 @@ export default () => {
   const [showAuthForms, setShowAuthForms] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string>('1');
   const [globalRoom, setGlobalRoom] = useState<API.GroupRoom>();
-  const [msgInfo, setMsgInfo] = useState<msgInfoProps>();   // msgInfo 渲染会话卡片的 信息
+  const [msgInfo, setMsgInfo] = useState<msgInfoProps>(); // msgInfo 渲染会话卡片的 信息
   const [showInfoCard, setShowInfoCard] = useState(false);
   const [messageStore, setMessageStore] = useState<{
     [roomId: number]: {
@@ -25,7 +25,7 @@ export default () => {
 
   useEffect(() => {
     getGlobalRoom().then((res) => {
-      const groupRoom: API.GroupRoom = res.data;
+      const groupRoom: API.GroupRoom = res?.data;
       if (!groupRoom) {
         message.error(res.message);
         return;

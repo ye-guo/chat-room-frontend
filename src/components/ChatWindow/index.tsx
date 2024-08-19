@@ -37,8 +37,8 @@ export default function ChatWindow() {
     // 加载历史消息
     try {
       const result = await getMessages(roomId, pageSize, cursorId);
-      const records = result.data.records;
-      const data = result.data;
+      const records = result?.data?.records;
+      const data = result?.data;
       if (!records) {
         console.log('没有更多消息了');
         message.info('没有更多消息了');
@@ -50,7 +50,7 @@ export default function ChatWindow() {
       const hMReverse: API.MsgInfo[] = records.reverse();
 
       setMessageStore((prevStore) => {
-        const lastRoomData = prevStore[data.roomId] || {
+        const lastRoomData = prevStore[data?.roomId] || {
           messages: [],
           historyMessages: [],
           cursorId: 0,
@@ -58,12 +58,12 @@ export default function ChatWindow() {
 
         return {
           ...prevStore,
-          [data.roomId]: {
+          [data?.roomId]: {
             ...lastRoomData,
-            cursorId: data.cursorId,
+            cursorId: data?.cursorId,
             // 更新历史消息
-            historyMessages: [...hMReverse, ...lastRoomData.historyMessages],
-            messages: [...lastRoomData.messages],
+            historyMessages: [...hMReverse, ...lastRoomData?.historyMessages],
+            messages: [...lastRoomData?.messages],
           },
         };
       });
@@ -109,8 +109,8 @@ export default function ChatWindow() {
   useEffect(() => {
     if (messages || historyMessages) {
       const latestMessage: API.MsgInfo =
-        messages[messages.length - 1] ||
-        historyMessages[historyMessages.length - 1];
+        messages[messages?.length - 1] ||
+        historyMessages[historyMessages?.length - 1];
       setMsgInfo(latestMessage);
 
       // 非自己消息 若在底部则滚动到底部，否则不滚动
@@ -137,7 +137,7 @@ export default function ChatWindow() {
   // 新消息没在底部时提示
   useEffect(() => {
     if (messages) {
-      const latestMessage: API.MsgInfo = messages[messages.length - 1];
+      const latestMessage: API.MsgInfo = messages[messages?.length - 1];
 
       if (
         windowRef.current &&
@@ -147,7 +147,7 @@ export default function ChatWindow() {
         setShowNewMessageAlert(true);
       }
     }
-  }, [messages.length]);
+  }, [messages?.length]);
 
   // 顶部加载历史信息
   const handleScroll = useCallback(() => {

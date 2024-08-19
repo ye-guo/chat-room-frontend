@@ -15,7 +15,7 @@ export default function UserList() {
     const fetchAndSetUsers = async (roomId: number) => {
       try {
         const res = await getGroupUsers(roomId);
-        const userList = res.data;
+        const userList = res?.data;
 
         userList.sort((a: API.UserVo, b: API.UserVo) => {
           if (a.activeStatus !== b.activeStatus) {
@@ -31,7 +31,8 @@ export default function UserList() {
         });
 
         setCount(
-          userList.filter((item: API.UserVo) => item.activeStatus === 1).length,
+          userList.filter((item: API.UserVo) => item.activeStatus === 1)
+            ?.length,
         );
         setUsers(userList);
       } catch (err) {

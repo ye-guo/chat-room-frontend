@@ -38,7 +38,7 @@ export default () => {
       const hMReverse: API.MsgInfo[] = historicalMessages.reverse();
 
       setMessageStore((prevStore) => {
-        const lastRoomData = prevStore[cursorData.roomId] || {
+        const lastRoomData = prevStore[cursorData?.roomId] || {
           messages: [],
           historyMessages: [],
           cursorId: 0,
@@ -46,13 +46,13 @@ export default () => {
 
         return {
           ...prevStore,
-          [cursorData.roomId]: {
+          [cursorData?.roomId]: {
             ...lastRoomData,
             // 设置游标
-            cursorId: cursorData.cursorId,
+            cursorId: cursorData?.cursorId,
             // 更新历史消息
             historyMessages: [...hMReverse],
-            messages: [...lastRoomData.messages],
+            messages: [...lastRoomData?.messages],
           },
         };
       });
