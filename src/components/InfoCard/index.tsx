@@ -8,6 +8,10 @@ import { Button, message, Upload, UploadFile } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import styles from './index.less';
+const uploadAddress =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.chat.yeguo.icu/api/user/upload'
+    : '/api/user/upload';
 
 export default () => {
   const { setShowInfoCard, globalRoom, setMessageStore } =
@@ -131,7 +135,7 @@ export default () => {
           <div className={styles.name}>{currentUser?.username}</div>
         </div>
         <Upload
-          action={`/api/user/upload`}
+          action={uploadAddress}
           beforeUpload={handleBeforeUpload}
           onChange={handleUploadChange}
           name="image"
